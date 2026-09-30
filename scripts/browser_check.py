@@ -10,7 +10,7 @@ with sync_playwright() as p:
     page = browser.new_page(viewport={'width': 1440, 'height': 1100}, device_scale_factor=1)
     errors = []
     page.on('pageerror', lambda error: errors.append(str(error)))
-    page.goto('http://127.0.0.1:8080')
+    page.goto(os.getenv('VOICE_LAB_URL', 'http://127.0.0.1:8080'))
     page.get_by_role('button', name='Start demo').click()
     expect(page.get_by_role('alert')).to_contain_text('confirm consent')
     page.get_by_role('checkbox').check()

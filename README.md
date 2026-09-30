@@ -8,6 +8,10 @@ A consent-based mock-interview workspace with a Go WebSocket audio gateway, a Py
 
 This is a portfolio engineering lab for **disclosed practice**, with visible recording and a two-minute limit. It has no hidden overlay, system-audio interception, or covert interview assistance.
 
+![Completed synthetic practice session in the real browser application](docs/images/dashboard.png)
+
+*Captured by the passing Chromium acceptance test, using the running Go and Python services. [Mobile view](docs/images/mobile.png).*
+
 ## Try the demo
 
 Requirements: **Go 1.24+ and Python 3.11+**. No API key or Python dependency is needed for the native demo. First Go build downloads the single WebSocket dependency.
