@@ -1,0 +1,2 @@
+# Redis is optional; the base coaching service uses only the Python standard library.
+redis==6.4.0

@@ -1,0 +1,9 @@
+FROM python:3.11-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt && useradd --create-home app
+COPY coach ./coach
+USER app
+ENV COACH_BIND=0.0.0.0
+EXPOSE 8091
+CMD ["python", "-m", "coach.service"]

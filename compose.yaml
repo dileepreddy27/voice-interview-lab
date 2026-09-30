@@ -1,0 +1,34 @@
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    ports: ["127.0.0.1:8080:8080"]
+    environment:
+      COACH_URL: http://coach:8091
+      DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY:-}
+    depends_on:
+      coach:
+        condition: service_healthy
+  coach:
+    build:
+      context: .
+      dockerfile: Dockerfile.coach
+    environment:
+      REDIS_URL: redis://redis:6379/0
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8091/healthz')"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    depends_on:
+      redis:
+        condition: service_healthy
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "--save", "", "--appendonly", "no"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10

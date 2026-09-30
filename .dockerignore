@@ -1,0 +1,8 @@
+.git
+work
+outputs
+.env
+.venv
+**/__pycache__
+node_modules
+*.exe

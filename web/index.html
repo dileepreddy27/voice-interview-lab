@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Voice Interview Lab · Practice with evidence</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><a class="brand" href="/">◉ <span>VOICE / LAB</span></a><span class="pill">OPEN ENGINEERING LAB</span><a href="https://github.com/dileepreddy27/voice-interview-lab">View source ↗</a></header>
+<main>
+<section class="hero"><div><p class="eyebrow">SPEAK. REFLECT. ITERATE.</p><h1>A clearer story.<br><em>One answer at a time.</em></h1><p class="intro">A transparent practice space for your next engineering interview. Watch audio move through a real streaming pipeline, then reflect on the structure of your answer.</p></div><aside class="hero-note"><span class="dot"></span> PRACTICE, WITH PERMISSION<p>For your own mock interviews.<br>Visible recording. No covert assistance.</p><span class="small">02:00 maximum per session</span></aside></section>
+<div class="workspace">
+<section class="panel session"><div class="section-head"><h2>01 / Practice room</h2><span id="status" class="badge" role="status">Ready to explore</span></div>
+<label for="source">Audio source</label><select id="source"><option value="demo">Synthetic demo · no microphone or API key</option value="microphone" disabled>Microphone · requires server Deepgram key</option></select>
+<div class="prompt"><p class="eyebrow">TODAY’S QUESTION</p><h3>Tell me about a time you improved a slow system.</h3><p>Set the scene, explain your responsibility, describe your actions, and share the result.</p></div>
+<div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+<p id="source-note" class="small">Generated tones + scripted transcript. This demo does not perform speech recognition.</p>
+<label class="consent"><input type="checkbox" id="consent"><span>I’m practicing with consent. In microphone mode, audio is sent to Deepgram for transcription.</span></label>
+<div class="actions"><button id="start">Start demo <span>↗</span></button><button id="stop" class="secondary" disabled>Finish answer</button></div>
+<p id="error" role="alert"></p>
+<div class="privacy small">Audio is streamed, never saved by this app. Transcripts stay in browser/server memory. Optional Redis stores anonymous counts for one hour. Provider retention policies apply in live mode.</div>
+</section>
+<section class="panel transcript"><div class="section-head"><h2>02 / Live transcript</h2><span id="mode" class="badge">SYNTHETIC DEMO</span></div><div id="transcript" aria-live="polite"><p class="placeholder">Your answer will appear here.<br><span>Finalized speech becomes coaching input.</span></p></div><p id="interim"></p><div class="stream-footer"><span id="chunks">0 chunks received</span><span id="seconds">0.0s audio</span></div></section>
+<section class="panel feedback"><div class="section-head"><h2>03 / Reflection</h2><span class="small">LOCAL HEURISTICS</span></div><div class="signals" id="signals"><div>Situation<span>—</span></div><div>Task<span>—</span></div><div>Action<span>—</span></div><div>Result<span>—</span></div></div><p id="tip">Finish an answer to see structure cues and a next step.</p><p class="small">Keyword matches are practice cues, not a hiring score. They do not assess accuracy, skill, or semantic quality.</p><div class="stats"><div><strong id="words">—</strong><span>words</span></div><div><strong id="fillers">—</strong><span>filler words</span></div><div><strong id="coach-ms">—</strong><span>coach round trip</span></div></div><button id="download" class="secondary" disabled>Download session JSON ↓</button></section>
+</div>
+<section class="pipeline"><p class="eyebrow">UNDER THE HOOD</p><div><span>Browser PCM</span><b>→</b><span>Go WebSocket gateway</span><b>→</b><span>Scripted / Deepgram transcript</span><b>→</b><span>Python coaching</span></div><p class="small">Bounded queues · 16 concurrent sessions maximum · backpressure · optional Redis metrics</p></section>
+</main><footer><span>Built for deliberate practice.</span><span>Voice Interview Lab / v1.0</span></footer>
+<script src="/app.js" type="module"></script>
+</body></html>

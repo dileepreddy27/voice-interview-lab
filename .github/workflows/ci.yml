@@ -1,0 +1,44 @@
+name: Verify streaming lab
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.26.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: python -m pip install -r requirements-dev.txt
+      - run: python -m playwright install --with-deps chromium
+      - run: go vet ./...
+      - run: go test -race -cover ./...
+      - run: python -m unittest discover -s coach -v
+      - run: node --check web/app.js && node --check web/pcm-worklet.js
+      - name: Verify real Redis expiry and privacy contract
+        run: python scripts/check_redis.py
+      - name: End-to-end services
+        run: |
+          python -m coach.service > /tmp/coach.log 2>&1 &
+          go build -o /tmp/gateway ./cmd/gateway
+          /tmp/gateway > /tmp/gateway.log 2>&1 &
+          for i in {1..30}; do curl -fsS http://127.0.0.1:8080/healthz && break; sleep 1; done
+          python scripts/smoke.py
+          python scripts/browser_check.py
+      - name: Build and smoke Docker Compose
+        run: |
+          docker compose config --quiet
+          # Native gateway occupies 8080; stop it before the Compose check.
+          pkill -x gateway
+          docker compose up --build -d --wait
+          python scripts/smoke.py
+          docker compose down
