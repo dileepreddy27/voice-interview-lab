@@ -27,6 +27,8 @@ jobs:
       - name: Verify real Redis expiry and privacy contract
         run: python scripts/check_redis.py
       - name: End-to-end services
+        env:
+          SCREENSHOT_DIR: work/screenshots
         run: |
           python -m coach.service > /tmp/coach.log 2>&1 &
           go build -o /tmp/gateway ./cmd/gateway
@@ -34,6 +36,12 @@ jobs:
           for i in {1..30}; do curl -fsS http://127.0.0.1:8080/healthz && break; sleep 1; done
           python scripts/smoke.py
           python scripts/browser_check.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-evidence
+          path: work/screenshots
+          if-no-files-found: ignore
       - name: Build and smoke Docker Compose
         run: |
           docker compose config --quiet

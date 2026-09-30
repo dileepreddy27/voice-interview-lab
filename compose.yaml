@@ -7,6 +7,11 @@ services:
     environment:
       COACH_URL: http://coach:8091
       DEEPGRAM_API_KEY: ${DEEPGRAM_API_KEY:-}
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/healthz"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
     depends_on:
       coach:
         condition: service_healthy
